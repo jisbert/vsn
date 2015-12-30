@@ -14,3 +14,6 @@ hs_err_pid*
 # Gradle #
 .gradle
 build
+
+# librerías no gestionadas con gradle #
+lib

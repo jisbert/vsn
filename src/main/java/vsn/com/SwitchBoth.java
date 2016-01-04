@@ -71,12 +71,12 @@ public class SwitchBoth implements Switch {
 
   public byte[] getBytes() {
     buffer.put(CONTROL);
-    if (output < 10) buffer.put(CERO);
+    if (output < 10) buffer.put(ZERO);
     buffer.put(String.valueOf(output).getBytes());
-    if (video < 10) buffer.put(CERO);
+    if (video < 10) buffer.put(ZERO);
     buffer.put(String.valueOf(video).getBytes());
     if (Objects.nonNull(audio)) {
-      if (audio < 10) buffer.put(CERO);
+      if (audio < 10) buffer.put(ZERO);
       buffer.put(String.valueOf(audio).getBytes());
     }
     buffer.put(CR);

@@ -1,20 +1,24 @@
 package vsn;
 
+import java.lang.RuntimeException;
 import java.lang.String;
 import java.lang.UnsupportedOperationException;
 import java.util.Objects;
+import javax.comm.CommPortIdentifier;
 import org.apache.commons.cli.*;
 import vsn.com.*;
 import vsn.comm.*;
 
 public class Cli {
 
-  public static void usage(Options options) {
-    new HelpFormatter().printHelp("vsn", options);
-    System.exit(0);
-  }
+  private CommandLine cli = null;
+  private CommandLineParser parser;
+  private CommPortIdentifier serialPortId;
+  private HelpFormatter helpFormat;
+  private Options options = new Options();
+  private SerialPort serialPort;
 
-  public static void main(String[] args) throws ParseException {
+  public Cli() {
     // Declara el CLI
     Option audio =  Option.builder("a")
                           .longOpt("audio")
@@ -53,25 +57,31 @@ public class Cli {
                           .argName("canal")
                           .desc("canal vídeo de entrada")
                           .build();
-    Options options = new Options();
     options.addOption(audio)
            .addOption(help)
            .addOption(input)
            .addOption(output)
            .addOption(type)
            .addOption(video);
+    parser = new DefaultParser();
+    helpFormat = new HelpFormatter();
+    serialPort = new SerialPortMock();
+  }
+
+  public void usage() {
+    helpFormat.printHelp("vsn", options);
+    System.exit(0);
+  }
+
+  public void parse(String[] args) {
     // Procesa los argumentos
-    CommandLineParser parser = new DefaultParser();
-    HelpFormatter formatter = new HelpFormatter();
-    CommandLine cli = null;
     try { cli = parser.parse(options, args); }
-    catch (MissingOptionException e) { usage(options); }
-    if (cli.hasOption("h")) usage(options);
+    catch (MissingOptionException e) { usage(); }
+    catch (ParseException e) { throw new RuntimeException(e); }
+    if (cli.hasOption("h")) usage();
+    // Inicia la conexión serie
+    serialPort.init(serialPortId);
     String commandType = cli.getOptionValue("t");
-    // Inicia el puerto serie
-    SerialPort serialPort = new SerialPortMock();
-    serialPort.init(null); // TODO: utilizar no nulo con implementación efectiva del puerto serie
-    // Envía el comando
     switch (commandType) {
       case "audio":
         break;
@@ -92,6 +102,10 @@ public class Cli {
       default:
         throw new UnsupportedOperationException("Operación no soportada");
     }
+  }
+
+  public static void main(String[] args) {
+    new Cli().parse(args);
   }
 
 }

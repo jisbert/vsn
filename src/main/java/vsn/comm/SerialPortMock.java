@@ -1,6 +1,8 @@
 package vsn.comm;
 
+import java.lang.String;
 import java.util.Arrays;
+import java.util.StringJoiner;
 import javax.comm.CommPortIdentifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,14 +18,19 @@ public class SerialPortMock implements SerialPort {
   }
 
   public int sendCommand(byte[] buffer, int offset, int length) {
-    logger.debug("Enviado commando a la matriz: byte[{}] = {}", length, buffer);
+    if (logger.isDebugEnabled()) {
+      StringJoiner sj = new StringJoiner(" ");
+      for (byte b : buffer) sj.add(String.format("%02X", b));
+      String s = sj.toString();
+      logger.debug("Enviado commando a la matriz: byte[{}] = {}", buffer.length, s);
+    }
     return 0;
   }
 
   public int getResponse(byte[] buffer) {
     Arrays.fill(buffer, (byte) 0);
     buffer[0] = ACK;
-    logger.debug("Obtenida respuesta de la matriz: {}", buffer);
+    logger.debug("Obtenida respuesta de la matriz: byte[{}] = {}", buffer.length, buffer);
     return 1;
   }
 

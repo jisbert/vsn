@@ -6,8 +6,10 @@ import java.lang.UnsupportedOperationException;
 import java.util.Objects;
 import javax.comm.CommPortIdentifier;
 import org.apache.commons.cli.*;
-import vsn.com.*;
-import vsn.comm.*;
+import vsn.com.Command;
+import vsn.com.SwitchBoth;
+import vsn.comm.SerialPort;
+import vsn.comm.SerialPortMock;
 
 public class Cli {
 

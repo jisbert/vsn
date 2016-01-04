@@ -1,9 +1,11 @@
 package vsn.com;
 
+import java.lang.Integer;
+
 public interface Switch extends Command {
 
-  int getOutput();
+  Integer getOutput();
 
-  void setOutput(int output);
+  void setOutput(Integer output);
 
 }

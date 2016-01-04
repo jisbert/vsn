@@ -9,26 +9,28 @@ public class SwitchBoth implements Switch {
   public static final byte CONTROL = 0x42;
   private static final ByteBuffer buffer = ByteBuffer.allocate(8);
 
-  private int audio;
-  private int output;
-  private int video;
+  private Integer audio;
+  private Integer output;
+  private Integer video;
 
-  // public SwitchBoth(int output, int video) {
-  //   this.output = output;
-  //   this.video = video;
-  // }
-  //
-  // public SwitchBoth(int audio, int output, int video) {
-  //   this.audio = audio;
-  //   this.output = output;
-  //   this.video = video;
-  // }
+  public SwitchBoth() {}
 
-  public int getAudio() {
+  public SwitchBoth(Integer input, Integer output) {
+    this.output = output;
+    this.video = video;
+  }
+
+  public SwitchBoth(Integer audio, Integer output, Integer video) {
+    this.audio = audio;
+    this.output = output;
+    this.video = video;
+  }
+
+  public Integer getAudio() {
     return audio;
   }
 
-  public void setAudio(int audio) {
+  public void setAudio(Integer audio) {
     this.audio = audio;
   }
 
@@ -36,43 +38,42 @@ public class SwitchBoth implements Switch {
     return CONTROL;
   }
 
-  public int getInput() {
+  public Integer getInput() {
     return video;
   }
 
-  public void setInput(int input) {
+  public void setInput(Integer input) {
     video = input;
   }
 
-  public int getOutput() {
+  public Integer getOutput() {
     return output;
   }
 
-  public void setOutput(int output) {
+  public void setOutput(Integer output) {
     this.output = output;
   }
 
-  public int getVideo() {
+  public Integer getVideo() {
     return video;
   }
 
-  public void setVideo(int video) {
+  public void setVideo(Integer video) {
     this.video = video;
   }
 
   public byte[] getBytes() {
     if (Objects.isNull(output))
       throw new IllegalStateException("No se ha indicado un canal de salida");
-    if (Objects.isNull(audio) && Objects.isNull(video))
+    if (Objects.isNull(video))
       throw new IllegalStateException("No se ha indicado un canal de entrada");
     buffer.put(CONTROL);
+    if (output < 10) buffer.put(CERO);
     buffer.put(String.valueOf(output).getBytes());
-    if (Objects.nonNull(video)) {
-      if (video < 10) buffer.put(CERO);
-      buffer.put(String.valueOf(video).getBytes());
-    }
+    if (video < 10) buffer.put(CERO);
+    buffer.put(String.valueOf(video).getBytes());
     if (Objects.nonNull(audio)) {
-      if (video < 10) buffer.put(CERO);
+      if (audio < 10) buffer.put(CERO);
       buffer.put(String.valueOf(audio).getBytes());
     }
     buffer.put(CR);

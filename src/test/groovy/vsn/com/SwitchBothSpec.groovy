@@ -4,19 +4,17 @@ import spock.lang.*;
 
 class SwitchBothSpec extends Specification {
 
-  // def "Conmutar #output #video #audio genera #byteArray" () {
   @Unroll
-  def "Conmutar #output #video genera #byteArray" () {
+  def "Conmutar o:#output v:#video a:#audio genera #byteArray" () {
     when:
-      // def command = new SwitchBoth(audio: audio, output: output, video: video)
-      def command = new SwitchBoth(output: output, video: video)
+      def command = new SwitchBoth(audio: audio, output: output, video: video)
     then:
       command.getBytes().encodeHex().toString().toUpperCase() == byteArray
     where:
-    // output | video | audio || byteArray
-    // 11     | 5     | 0     || '42313130350D'
-      output | video || byteArray
-      11     | 5     || '42313130350D'
+      audio | output | video || byteArray
+      null  | 11     | 5     || '42313130350D'
+      3     | 4      | 10    || '423034313030330D'
+      5     | 7      | 5     || '423037303530350D'
   }
 
 }

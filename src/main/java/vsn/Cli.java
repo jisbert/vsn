@@ -72,29 +72,28 @@ public class Cli {
 
   public void usage() {
     helpFormat.printHelp("vsn", options);
-    System.exit(0);
   }
 
   public void parse(String[] args) {
-    // Procesa los argumentos
+    // Procesa las opciones
     try { cli = parser.parse(options, args); }
-    catch (MissingOptionException e) { usage(); }
+    catch (MissingOptionException e) { usage(); return; }
     catch (ParseException e) { throw new RuntimeException(e); }
-    if (cli.hasOption("h")) usage();
+    if (cli.hasOption("h")) { usage(); return;}
     // Inicia la conexión serie
     serialPort.init(serialPortId);
+    // Ejecuta el comando
     String commandType = cli.getOptionValue("t");
     switch (commandType) {
       case "audio":
         break;
       case "both":
-        int audioCh = Objects.nonNull(cli.getOptionValue("a")) ?
-                        Integer.parseInt(cli.getOptionValue("a")) : null;
-        System.out.println(cli.getOptionValue("o"));
+        Integer audioCh = Objects.nonNull(cli.getOptionValue("a")) ?
+                            Integer.parseInt(cli.getOptionValue("a")) : null;
         int outputCh = Integer.parseInt(cli.getOptionValue("o"));
         String inputChStr = Objects.nonNull(cli.getOptionValue("i")) ?
                               cli.getOptionValue("i") : cli.getOptionValue("v");
-        int inputCh  = Integer.parseInt(inputChStr);
+        int inputCh = Integer.parseInt(inputChStr);
         Command command = new SwitchBoth(audioCh, outputCh, inputCh);
         byte[] byteArray = command.getBytes();
         serialPort.sendCommand(byteArray, 0, byteArray.length);

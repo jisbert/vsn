@@ -20,7 +20,7 @@ public class SwitchBoth implements Switch {
     setInput(input);
   }
 
-  public SwitchBoth(int audio, int output, int video) {
+  public SwitchBoth(Integer audio, int output, int video) {
     setAudio(audio);
     setOutput(output);
     setVideo(video);

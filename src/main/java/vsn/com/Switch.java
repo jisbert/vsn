@@ -4,8 +4,12 @@ import java.lang.Integer;
 
 public interface Switch extends Command {
 
-  Integer getOutput();
+  int getInput();
 
-  void setOutput(Integer output);
+  void setInput(int input);
+
+  int getOutput();
+
+  void setOutput(int output);
 
 }

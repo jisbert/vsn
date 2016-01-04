@@ -5,7 +5,7 @@ import spock.lang.*;
 class SwitchBothSpec extends Specification {
 
   @Unroll
-  def "Conmutar o:#output v:#video a:#audio genera #byteArray" () {
+  def "SwitchBoth(audio:#audio, output:#output video:#video) genera #byteArray" () {
     when:
       def command = new SwitchBoth(audio: audio, output: output, video: video)
     then:

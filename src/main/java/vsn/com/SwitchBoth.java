@@ -1,6 +1,6 @@
 package vsn.com;
 
-import java.lang.IllegalStateException;
+import java.lang.IllegalArgumentException;
 import java.nio.ByteBuffer;
 import java.util.Objects;
 
@@ -10,27 +10,30 @@ public class SwitchBoth implements Switch {
   private static final ByteBuffer buffer = ByteBuffer.allocate(8);
 
   private Integer audio;
-  private Integer output;
-  private Integer video;
+  private int output = 0;
+  private int video = 0;
 
   public SwitchBoth() {}
 
-  public SwitchBoth(Integer input, Integer output) {
-    this.output = output;
-    this.video = video;
+  public SwitchBoth(int input, int output) {
+    setOutput(output);
+    setInput(input);
   }
 
-  public SwitchBoth(Integer audio, Integer output, Integer video) {
-    this.audio = audio;
-    this.output = output;
-    this.video = video;
+  public SwitchBoth(int audio, int output, int video) {
+    setAudio(audio);
+    setOutput(output);
+    setVideo(video);
   }
 
-  public Integer getAudio() {
+  public int getAudio() {
     return audio;
   }
 
   public void setAudio(Integer audio) {
+    if (Objects.isNull(audio)) return;
+    if (audio < 0 || 16 < audio)
+      throw new IllegalArgumentException("Canal de audio incorrecto: " + audio);
     this.audio = audio;
   }
 
@@ -38,35 +41,35 @@ public class SwitchBoth implements Switch {
     return CONTROL;
   }
 
-  public Integer getInput() {
-    return video;
+  public int getInput() {
+    return getVideo();
   }
 
-  public void setInput(Integer input) {
-    video = input;
+  public void setInput(int input) {
+    setVideo(input);
   }
 
-  public Integer getOutput() {
+  public int getOutput() {
     return output;
   }
 
-  public void setOutput(Integer output) {
+  public void setOutput(int output) {
+    if (output < 0 || 16 < output)
+      throw new IllegalArgumentException("Canal de salida incorrecto: " + output);
     this.output = output;
   }
 
-  public Integer getVideo() {
+  public int getVideo() {
     return video;
   }
 
-  public void setVideo(Integer video) {
+  public void setVideo(int video) {
+    if (video < 0 || 16 < video)
+      throw new IllegalArgumentException("Canal de vídeo incorrecto: " + video);
     this.video = video;
   }
 
   public byte[] getBytes() {
-    if (Objects.isNull(output))
-      throw new IllegalStateException("No se ha indicado un canal de salida");
-    if (Objects.isNull(video))
-      throw new IllegalStateException("No se ha indicado un canal de entrada");
     buffer.put(CONTROL);
     if (output < 10) buffer.put(CERO);
     buffer.put(String.valueOf(output).getBytes());

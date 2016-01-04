@@ -6,6 +6,15 @@ import javax.comm.CommPortIdentifier;
   */
 public interface SerialPort {
 
+  /** Constante que indica que la operación se ha completado correctamente.
+    */
+  static final byte ACK = 0x06;
+
+  /** Constante que indica que la operación no se ha podido completar
+    * correctamente.
+    */
+  static final byte NACK = 0x15;
+
   /** Inicia la sesión con la matriz.
     * @param port descriptor del puerto serie en el que se indican sus
     *             características

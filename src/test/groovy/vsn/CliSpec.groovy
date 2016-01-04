@@ -40,7 +40,8 @@ class CliSpec extends Specification {
       cli.getOptionValue("i") >> "0"
       app.parse(_ as String[])
     then:
-      1 * serialPort.sendCommand(_, 0, _)
+      1 * serialPort.sendCommand(_ as byte[], 0, _)
+      1 * serialPort.getResponse(_)
     when: "no se indica canal de entrada"
       cli.getOptionValue("o") >> "0"
       app.parse(_ as String[])
@@ -48,6 +49,7 @@ class CliSpec extends Specification {
       cli.getOptionValue("i") >> null
       thrown NumberFormatException
       0 * serialPort.sendCommand(*_)
+      0 * serialPort.getResponse(_)
     when: "no se indica canal de salida"
       cli.getOptionValue("i") >> "0"
       app.parse(_ as String[])
@@ -55,6 +57,7 @@ class CliSpec extends Specification {
       cli.getOptionValue("o") >> null
       thrown NumberFormatException
       0 * serialPort.sendCommand(*_)
+      0 * serialPort.getResponse(_)
   }
 
 }

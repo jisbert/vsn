@@ -84,6 +84,7 @@ public class Cli {
     serialPort.init(serialPortId);
     // Ejecuta el comando
     String commandType = cli.getOptionValue("t");
+    byte[] commandBytes = null;
     switch (commandType) {
       case "audio":
         break;
@@ -95,14 +96,18 @@ public class Cli {
                               cli.getOptionValue("i") : cli.getOptionValue("v");
         int inputCh = Integer.parseInt(inputChStr);
         Command command = new SwitchBoth(audioCh, outputCh, inputCh);
-        byte[] byteArray = command.getBytes();
-        serialPort.sendCommand(byteArray, 0, byteArray.length);
+        commandBytes = command.getBytes();
         break;
       case "video":
         break;
       default:
         throw new UnsupportedOperationException("Operación no soportada");
     }
+    serialPort.sendCommand(commandBytes, 0, commandBytes.length);
+    byte[] response = new byte[1];
+    serialPort.getResponse(response);
+    if (response[0] == SerialPort.NACK)
+      throw new RuntimeException("La operación ha fallado");
   }
 
   public static void main(String[] args) {

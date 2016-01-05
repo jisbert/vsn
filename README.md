@@ -23,15 +23,15 @@ Para compilar la aplicación se requiere además el [JDK de Oracle (jdk1.8.0_66)
 
 1. Clonar el repositorio con git
 
-```bash
-$ git clone -b master https://github.com/jisbert/vsn-sdz16-cli.git
-```
+  ```bash
+  $ git clone -b master https://github.com/jisbert/vsn-sdz16-cli.git
+  ```
 
 2. Descargar y extraer la última revisión
 
-```bash
-$ curl -LO https://github.com/jisbert/vsn-sdz16-cli/archive/master.zip && 7z x master.zip
-```
+  ```bash
+  $ curl -LO https://github.com/jisbert/vsn-sdz16-cli/archive/master.zip && 7z x master.zip
+  ```
 
 Para utilizar la aplicación basta con extraer el contenido de la distribución en un directorio y ejecutar la aplicación desde la línea de comandos.
 

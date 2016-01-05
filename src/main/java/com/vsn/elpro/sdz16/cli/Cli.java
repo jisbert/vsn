@@ -13,6 +13,8 @@ import java.util.Enumeration;
 import java.util.Objects;
 import javax.comm.CommPortIdentifier;
 import org.apache.commons.cli.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /** Procesa las opciones y ejecuta el comando. Por defecto utiliza una
   * implementación que suplanta la conexión serie, es posible inyectar una
@@ -20,6 +22,9 @@ import org.apache.commons.cli.*;
   * @see Cli#setSerialPort
   */
 public class Cli {
+
+  private static final Logger LOGGER =
+    LoggerFactory.getLogger(Cli.class.getName());
 
   private CommandLine cli = null;
   private CommandLineParser parser = new DefaultParser();
@@ -112,7 +117,7 @@ public class Cli {
           }
         }
       } catch (Throwable t) {
-        t.printStackTrace();
+        LOGGER.error("No se ha podido obtener un identificador de puerto válido", t);
       }
     }
     return serialPortId;

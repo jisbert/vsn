@@ -12,16 +12,19 @@ import java.util.Objects;
 import javax.comm.CommPortIdentifier;
 import org.apache.commons.cli.*;
 
-/** Procesa las opciones y ejecuta el comando.
+/** Procesa las opciones y ejecuta el comando. Por defecto utiliza una
+  * implementación que suplanta la conexión serie, es posible inyectar una
+  * implementación efectiva de la conexión.
+  * @see Cli#setSerialPort
   */
 public class Cli {
 
   private CommandLine cli = null;
-  private CommandLineParser parser;
+  private CommandLineParser parser = new DefaultParser();
   private CommPortIdentifier serialPortId;
-  private HelpFormatter helpFormat;
+  private HelpFormatter helpFormat = new HelpFormatter();
   private Options options = new Options();
-  private SerialPort serialPort;
+  private SerialPort serialPort = new SerialPortMock();
 
   public Cli() {
     // Declara el CLI
@@ -68,15 +71,27 @@ public class Cli {
            .addOption(output)
            .addOption(type)
            .addOption(video);
-    parser = new DefaultParser();
-    helpFormat = new HelpFormatter();
-    serialPort = new SerialPortMock();
+    helpFormat.setSyntaxPrefix("uso: ");
   }
 
   /** Muestra un mensaje de ayuda.
     */
   public void usage() {
-    helpFormat.printHelp("vsn", options);
+    helpFormat.printHelp("vsn-sdz16-cli -t <comando> [opciones]", options);
+  }
+
+  /** Obtiene el puerto serie para la comunicación con la matriz.
+    * @return puerto serie
+    */
+  public SerialPort getSerialPort() {
+    return serialPort;
+  }
+
+  /** Inyecta el puerto serie para la comunicación con la matriz.
+    * @param serialPort puerto serie
+    */
+  public void setSerialPort(SerialPort serialPort) {
+    this.serialPort = serialPort;
   }
 
   /** Obtiene el descriptor del puerto serie para la comunicación con la matriz.
@@ -86,8 +101,8 @@ public class Cli {
     return serialPortId;
   }
 
-  /** Asigna el descriptor del puerto serie para la comunicación con la matriz.
-    * @param serialPortId descriptor del puerto serie.
+  /** Inyecta el descriptor del puerto serie para la comunicación con la matriz.
+    * @param serialPortId descriptor del puerto serie
     */
   public void setSerialPortId(CommPortIdentifier serialPortId) {
     this.serialPortId = serialPortId;

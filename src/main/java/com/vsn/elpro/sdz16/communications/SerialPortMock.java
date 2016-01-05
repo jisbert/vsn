@@ -2,6 +2,7 @@ package com.vsn.elpro.sdz16.communications;
 
 import java.lang.String;
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.StringJoiner;
 import javax.comm.CommPortIdentifier;
 import org.slf4j.Logger;
@@ -15,8 +16,8 @@ import org.slf4j.LoggerFactory;
   * configuración de logback se proporciona en el archivo {@code logback.xml} y
   * determina el modo en que se crea el registro. Por defecto, el registro se
   * muestra por pantalla y se vuelca al fichero {@code sdz16.log} en la
-  * ubicación en la que se ejecuta la aplicación. El fichero rota cada día,
-  * creándose un nuevo fichero al terminar el día.
+  * ubicación en la que se ejecuta la aplicación. El fichero rota cuando supera
+  * un tamaño de 5 MB, creándose un nuevo fichero al superar este tamaño.
   */
 public class SerialPortMock implements SerialPort {
 
@@ -24,7 +25,10 @@ public class SerialPortMock implements SerialPort {
     LoggerFactory.getLogger(SerialPortMock.class.getName());
 
   public int init(CommPortIdentifier port) {
-    LOGGER.debug("Conexión con la matriz iniciada");
+    if (LOGGER.isDebugEnabled()) {
+      String name = Objects.nonNull(port) ? port.getName() : null;
+      LOGGER.debug("Conexión con la matriz iniciada en el puerto serie: {}", name);
+    }
     return 0;
   }
 

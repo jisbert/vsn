@@ -15,7 +15,7 @@ Java(TM) SE Runtime Environment (build 1.8.0_66-b17)
 Java HotSpot(TM) 64-Bit Server VM (build 25.66-b17, mixed mode)
 ```
 
-Para compilar la aplicación se requiere además el [JDK de Oracle (jdk1.8.0_66)](http://www.oracle.com/technetwork/java/javase/downloads/index.html) y haber instalado el [Java Communications API](http://www.oracle.com/technetwork/java/javasebusiness/downloads/java-archive-downloads-misc-419423.html) en el directorio lib del proyecto.
+Para compilar la aplicación se requiere además el [JDK de Oracle (jdk1.8.0_66)](http://www.oracle.com/technetwork/java/javase/downloads/index.html) y haber instalado el [Java Communications API](http://www.oracle.com/technetwork/java/javasebusiness/downloads/java-archive-downloads-misc-419423.html) en el directorio `lib` del proyecto.
 
 ## Instalación
 
@@ -58,9 +58,9 @@ $ firefox build/reports/tests/index.html
 
 ## Utilizar la librería Java Communications API
 
-Para utilizar esta aplicación no es necesario utilizar Java Communications API, puesto que no se establece una conexión real con la matriz de conmutación sino que se emplea una implementación que suplanta a la conexión real. Por otro lado, tanto el API como el tipo de conexión son anticuados, lo que ha impedido utilizar el API incluso de forma simulada produciéndose un error al tratar de utilizar la clase `javax.comm.CommPortIdentifier`. No obstante, se ha preparado el API de modo que resulte posible inyectar una instancia de `javax.comm.CommPortIdentifier` en el interfaz de línea de comando para poder instanciar una conexión serie real, véase la documentación del API para más información.
+Para utilizar esta aplicación no es necesario utilizar Java Communications API, puesto que no se establece una conexión real con la matriz de conmutación sino que se emplea una implementación que suplanta a la conexión real. Por otro lado, tanto el API como el tipo de conexión son anticuados, lo que puede impedir utilizar el API incluso de forma simulada, produciéndose errores al tratar de utilizar la clase `javax.comm.CommPortIdentifier`. No obstante, la aplicación trata de obtener un puerto serie utilizando la librería y se ha preparado el API de modo que resulte posible inyectar un puerto serie para poder establecer una conexión serie real con la matriz (véase la documentación del API para más información).
 
-Este apartado describe como configurar el entorno para utilizar la librería Java Communications API en un sistema Linux (no existe soporte oficial para sistemas Windows, MacOS). Esta información se ha obtenido de la documentación de la librería.
+Este apartado describe como configurar el entorno para utilizar la librería Java Communications API en un sistema Linux de 32 bits (no existe soporte oficial para sistemas Linux de 64 bit, Windows o MacOS). Esta información se ha obtenido de la documentación de la librería. Desde el directorio raíz del proyecto se crea un enlace al fichero `javax.comm.properties` en el directorio que contiene `comm.jar` y se configura la variable `LD_LIBRARY_PATH` de modo que apunte al directorio que contiene las librerías nativas.
 
 ```bash
 $ ln -rs lib/commapi/docs/javax.comm.properties lib/commapi/jar/

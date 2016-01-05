@@ -33,8 +33,8 @@ Para compilar la aplicación se requiere además el [JDK de Oracle (jdk1.8.0_66)
 
 Para utilizar la aplicación basta con extraer el contenido de la distribución en un directorio y ejecutar la aplicación desde la línea de comandos.
 
-    $ 7z x vsn-sdz16-cli-1.3.zip
-    $ mv vsn-sdz16-cli-1.3 $DIST_ROOT
+    $ 7z x vsn-sdz16-cli-1.4.zip
+    $ mv vsn-sdz16-cli-1.4 $DIST_ROOT
     $ $DIST_ROOT/bin/vsn-sdz16-cli
 
 ## Generar la distribución

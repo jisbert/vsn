@@ -6,8 +6,11 @@ import com.vsn.elpro.sdz16.command.SwitchVideo;
 import com.vsn.elpro.sdz16.communications.SerialPort;
 import com.vsn.elpro.sdz16.communications.SerialPortMock;
 import java.lang.RuntimeException;
+import java.lang.Throwable;
 import java.lang.String;
+import java.lang.System;
 import java.lang.UnsupportedOperationException;
+import java.util.Enumeration;
 import java.util.Objects;
 import javax.comm.CommPortIdentifier;
 import org.apache.commons.cli.*;
@@ -152,12 +155,26 @@ public class Cli {
       throw new RuntimeException("La operación ha fallado");
   }
 
-  /** Instancia el interfaz.
+  /** Instancia el interfaz y trata de inyectar un puerto serie.
     * @param args argumentos proporcionados al ejecutar la aplicación desde la
     *             línea de comandos
     */
   public static void main(String[] args) {
-    new Cli().parse(args);
+    Cli cli = new Cli();
+    try {
+      Enumeration portIdEnum = CommPortIdentifier.getPortIdentifiers();
+      while(portIdEnum.hasMoreElements()) {
+        CommPortIdentifier portId = (CommPortIdentifier) portIdEnum.nextElement();
+        if (portId.getPortType() == CommPortIdentifier.PORT_SERIAL) {
+          cli.setSerialPortId(portId);
+          break;
+        }
+      }
+    } catch (Throwable t) {
+      t.printStackTrace();
+      System.out.println();
+    }
+    cli.parse(args);
   }
 
 }

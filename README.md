@@ -49,9 +49,7 @@ La primera vez que se ejecuta el comando el programa descarga la distribución d
 
 Una vez generada la distribución el informe de las pruebas unitarias puede consultarse en la siguiente ubicación
 
-```bash
-$ firefox $PROJECT_ROOT/build/reports/tests/index.html
-```
+    $ firefox $PROJECT_ROOT/build/reports/tests/index.html
 
 ## Utilizar la librería Java Communications API<a name="javax-comm"></a>
 

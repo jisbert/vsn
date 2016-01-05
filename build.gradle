@@ -3,6 +3,7 @@ apply plugin: 'groovy'
 
 applicationName = 'vsn-sdz16-cli'
 mainClassName = 'com.vsn.elpro.sdz16.cli.Cli'
+version = '0.0'
 
 repositories {
   mavenCentral()
@@ -23,13 +24,16 @@ jar {
 }
 
 javadoc {
+  title = 'VSN elpro SDZ16 client'
   options.author = true
   options.charSet = 'UTF-8'
   options.noQualifiers = ['all']
+  options.overview = 'overview.html'
 }
 
 distributions.main.contents {
   from 'README.md'
   from (javadoc) { into 'docs' }
   from (sourceSets.main.allSource) { into 'src' }
+  from (sourceSets.test.allSource) { into 'src' }
 }

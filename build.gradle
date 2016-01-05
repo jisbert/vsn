@@ -1,0 +1,39 @@
+apply plugin: 'application'
+apply plugin: 'groovy'
+
+applicationName = 'vsn-sdz16-cli'
+mainClassName = 'com.vsn.elpro.sdz16.cli.Cli'
+version = '1.0'
+
+repositories {
+  mavenCentral()
+}
+
+dependencies {
+  compile 'ch.qos.logback:logback-classic:1.1.3'
+  compile 'commons-cli:commons-cli:1.3.1'
+  compile fileTree(dir: 'lib', include: '**/*.jar', excludes: ['**/commtest.jar', '**/tools/**'])
+  testCompile 'org.codehaus.groovy:groovy-all:2.4.5'
+  testCompile "org.spockframework:spock-core:1.0-groovy-2.4"
+  testRuntime "cglib:cglib-nodep:3.1"
+  testRuntime "org.objenesis:objenesis:2.1"
+}
+
+jar {
+  baseName = 'vsn-sdz16-cli'
+}
+
+javadoc {
+  title = 'VSN elpro SDZ16 client'
+  options.author = true
+  options.charSet = 'UTF-8'
+  options.noQualifiers = ['all']
+  options.overview = 'overview.html'
+}
+
+distributions.main.contents {
+  from 'README.md'
+  from (javadoc) { into 'docs' }
+  from (sourceSets.main.allSource) { into 'src' }
+  from (sourceSets.test.allSource) { into 'src' }
+}

@@ -1,6 +1,4 @@
-package vsn.com;
-
-import java.lang.Integer;
+package com.vsn.elpro.sdz16.command;
 
 /** Interfaz que representa un comando conmutar.
   */

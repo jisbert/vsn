@@ -1,4 +1,4 @@
-package vsn.comm;
+package com.vsn.elpro.sdz16.communications;
 
 import java.lang.String;
 import java.util.Arrays;
@@ -14,9 +14,9 @@ import org.slf4j.LoggerFactory;
   * para crear un registro de las interacciones que se producen. La
   * configuración de logback se proporciona en el archivo {@code logback.xml} y
   * determina el modo en que se crea el registro. Por defecto, el registro se
-  * muestra por pantalla y se vuelca al fichero {@code vsn.log} en la ubicación
-  * en la que se ejecuta la aplicación. El fichero rota cada día, creándose un
-  * nuevo fichero al terminar el día.
+  * muestra por pantalla y se vuelca al fichero {@code sdz16.log} en la
+  * ubicación en la que se ejecuta la aplicación. El fichero rota cada día,
+  * creándose un nuevo fichero al terminar el día.
   */
 public class SerialPortMock implements SerialPort {
 

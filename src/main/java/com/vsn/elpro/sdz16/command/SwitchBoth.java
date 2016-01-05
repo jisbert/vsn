@@ -1,6 +1,5 @@
-package vsn.com;
+package com.vsn.elpro.sdz16.command;
 
-import java.lang.IllegalArgumentException;
 import java.nio.ByteBuffer;
 import java.util.Objects;
 

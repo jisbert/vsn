@@ -1,6 +1,6 @@
-package vsn.com
+package com.vsn.elpro.sdz16.command
 
-import spock.lang.*;
+import spock.lang.*
 
 class SwitchVideoSpec extends Specification {
 

@@ -1,4 +1,4 @@
-package vsn.comm;
+package com.vsn.elpro.sdz16.communications;
 
 import javax.comm.CommPortIdentifier;
 

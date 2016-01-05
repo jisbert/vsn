@@ -1,3 +1,3 @@
 /** Proporciona el interfaz de línea de comandos.
   */
-package vsn;
+package com.vsn.elpro.sdz16.cli;

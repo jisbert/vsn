@@ -1,10 +1,12 @@
-package vsn;
+package com.vsn.elpro.sdz16.cli
 
-import javax.comm.CommPortIdentifier;
-import org.apache.commons.cli.*;
-import vsn.com.*;
-import vsn.comm.*;
-import spock.lang.*;
+import com.vsn.elpro.sdz16.command.SwitchAudio
+import com.vsn.elpro.sdz16.command.SwitchBoth
+import com.vsn.elpro.sdz16.command.SwitchVideo
+import com.vsn.elpro.sdz16.communications.SerialPort
+import com.vsn.elpro.sdz16.communications.SerialPortMock
+import org.apache.commons.cli.*
+import spock.lang.*
 
 class CliSpec extends Specification {
 

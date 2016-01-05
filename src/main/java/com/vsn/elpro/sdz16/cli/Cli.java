@@ -1,14 +1,16 @@
-package vsn;
+package com.vsn.elpro.sdz16.cli;
 
+import com.vsn.elpro.sdz16.command.SwitchAudio;
+import com.vsn.elpro.sdz16.command.SwitchBoth;
+import com.vsn.elpro.sdz16.command.SwitchVideo;
+import com.vsn.elpro.sdz16.communications.SerialPort;
+import com.vsn.elpro.sdz16.communications.SerialPortMock;
 import java.lang.RuntimeException;
 import java.lang.String;
 import java.lang.UnsupportedOperationException;
 import java.util.Objects;
 import javax.comm.CommPortIdentifier;
 import org.apache.commons.cli.*;
-import vsn.com.*;
-import vsn.comm.SerialPort;
-import vsn.comm.SerialPortMock;
 
 /** Procesa las opciones y ejecuta el comando.
   */

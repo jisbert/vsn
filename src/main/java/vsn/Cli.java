@@ -77,6 +77,20 @@ public class Cli {
     helpFormat.printHelp("vsn", options);
   }
 
+  /** Obtiene el descriptor del puerto serie para la comunicación con la matriz.
+    * @return descriptor del puerto serie
+    */
+  public CommPortIdentifier getSerialPortId() {
+    return serialPortId;
+  }
+
+  /** Asigna el descriptor del puerto serie para la comunicación con la matriz.
+    * @param serialPortId descriptor del puerto serie.
+    */
+  public void setSerialPortId(CommPortIdentifier serialPortId) {
+    this.serialPortId = serialPortId;
+  }
+
   /** Procesa las opciones y ejecuta el comando.
     * @param args opciones
     */

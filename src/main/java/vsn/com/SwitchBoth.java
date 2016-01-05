@@ -4,6 +4,12 @@ import java.lang.IllegalArgumentException;
 import java.nio.ByteBuffer;
 import java.util.Objects;
 
+/** Comando conmutar ambos.
+  *
+  * Conmuta ambos canales, audio y vídeo. Toma como canal de entrada por defecto el
+  * canal de vídeo. Si el canal de audio no se indica selecciona el canal con el
+  * mismo identificador que el canal de vídeo.
+  */
 public class SwitchBoth extends SwitchVideo {
 
   public static final byte CONTROL = 0x42;
@@ -25,14 +31,23 @@ public class SwitchBoth extends SwitchVideo {
     setVideo(Integer.parseInt(video));
   }
 
+  /** Obtiene el canal de audio.
+    * @return identificador numérico del canal de audio
+    */
   public int getAudio() {
     return audio;
   }
 
+  /** Asigna el canal de audio.
+    *
+    * El canal de audio es opcional, si se anula el comando selecciona el canal con
+    * el mismo identificador que el canal de entrada por defecto, el canal de vídeo.
+    * @param audio identificador numérico del canal de audio
+    */
   public void setAudio(Integer audio) {
     if (Objects.isNull(audio)) return;
     if (audio < 0 || 16 < audio)
-      throw new IllegalArgumentException("Canal de audio incorrecto: " + audio);
+      throw new IllegalArgumentException("Canal de entrada de audio incorrecto: " + audio);
     this.audio = audio;
   }
 

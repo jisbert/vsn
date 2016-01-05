@@ -10,6 +10,8 @@ import vsn.com.*;
 import vsn.comm.SerialPort;
 import vsn.comm.SerialPortMock;
 
+/** Procesa las opciones y ejecuta el comando.
+  */
 public class Cli {
 
   private CommandLine cli = null;
@@ -69,10 +71,15 @@ public class Cli {
     serialPort = new SerialPortMock();
   }
 
+  /** Muestra un mensaje de ayuda.
+    */
   public void usage() {
     helpFormat.printHelp("vsn", options);
   }
 
+  /** Procesa las opciones y ejecuta el comando.
+    * @param args opciones
+    */
   public void parse(String[] args) {
     // Procesa las opciones
     try { cli = parser.parse(options, args); }
@@ -114,6 +121,10 @@ public class Cli {
       throw new RuntimeException("La operación ha fallado");
   }
 
+  /** Instancia el interfaz.
+    * @param args argumentos proporcionados al ejecutar la aplicación desde la
+    *             línea de comandos
+    */
   public static void main(String[] args) {
     new Cli().parse(args);
   }

@@ -9,12 +9,12 @@ public abstract class AbstractSwitch implements Switch {
   protected int input = 0;
   protected int output = 0;
 
-  public AbstractSwitch(int input, int output) {
+  protected AbstractSwitch(int input, int output) {
     setInput(input);
     setOutput(output);
   }
 
-  public AbstractSwitch(String input, String output) {
+  protected AbstractSwitch(String input, String output) {
     setInput(Integer.parseInt(input));
     setOutput(Integer.parseInt(output));
   }
@@ -23,7 +23,7 @@ public abstract class AbstractSwitch implements Switch {
     return input;
   }
 
-  public void setInput(Integer input, String nombre) {
+  protected void setInput(Integer input, String nombre) {
     if (input < 0 || 16 < input)
       throw new IllegalArgumentException("Canal de entrada de " + nombre + " incorrecto: " + input);
     this.input = input;

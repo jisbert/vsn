@@ -8,7 +8,6 @@ import com.vsn.elpro.sdz16.communications.SerialPortMock;
 import java.lang.RuntimeException;
 import java.lang.Throwable;
 import java.lang.String;
-import java.lang.System;
 import java.lang.UnsupportedOperationException;
 import java.util.Enumeration;
 import java.util.Objects;
@@ -98,9 +97,24 @@ public class Cli {
   }
 
   /** Obtiene el descriptor del puerto serie para la comunicación con la matriz.
+    * Si no se dispone de un descriptor trata de proveer uno.
     * @return descriptor del puerto serie
     */
   public CommPortIdentifier getSerialPortId() {
+    if (serialPortId == null) {
+      try {
+        Enumeration portIdEnum = CommPortIdentifier.getPortIdentifiers();
+        while(portIdEnum.hasMoreElements()) {
+          CommPortIdentifier portId = (CommPortIdentifier) portIdEnum.nextElement();
+          if (portId.getPortType() == CommPortIdentifier.PORT_SERIAL) {
+            serialPortId = portId;
+            break;
+          }
+        }
+      } catch (Throwable t) {
+        t.printStackTrace();
+      }
+    }
     return serialPortId;
   }
 
@@ -121,7 +135,7 @@ public class Cli {
     catch (ParseException e) { throw new RuntimeException(e); }
     if (cli.hasOption("h")) { usage(); return;}
     // Inicia la conexión serie
-    serialPort.init(serialPortId);
+    serialPort.init(getSerialPortId());
     // Configura el comando
     String commandType = cli.getOptionValue("t");
     byte[] commandBytes = null;
@@ -160,21 +174,7 @@ public class Cli {
     *             línea de comandos
     */
   public static void main(String[] args) {
-    Cli cli = new Cli();
-    try {
-      Enumeration portIdEnum = CommPortIdentifier.getPortIdentifiers();
-      while(portIdEnum.hasMoreElements()) {
-        CommPortIdentifier portId = (CommPortIdentifier) portIdEnum.nextElement();
-        if (portId.getPortType() == CommPortIdentifier.PORT_SERIAL) {
-          cli.setSerialPortId(portId);
-          break;
-        }
-      }
-    } catch (Throwable t) {
-      t.printStackTrace();
-      System.out.println();
-    }
-    cli.parse(args);
+    new Cli().parse(args);
   }
 
 }

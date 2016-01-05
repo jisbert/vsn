@@ -17,7 +17,7 @@ class CliSpec extends Specification {
                     parser: parser,
                     serialPort: serialPort)
 
-  def "Las opciones se procesan correctamente"() {
+  def "Procesa las opciones correctamente"() {
     when:
       cli.hasOption("h") >> true
       app.parse(_ as String[])
@@ -32,15 +32,35 @@ class CliSpec extends Specification {
       0 * serialPort._
   }
 
-  def "Conmutar ambos se procesa correctamente"() {
+  def "Procesa conmutar audio correctamente"() {
+    given:
+      cli.getOptionValue("t") >> "audio"
+    when: "se indica canal de entrada y de salida"
+      cli.getOptionValue("i") >> "0"
+      cli.getOptionValue("o") >> "0"
+      app.parse(_ as String[])
+    then:
+      1 * serialPort.sendCommand([SwitchAudio.CONTROL, 0x30, 0x30, 0x30, 0x30, 0x0D] as byte[], 0, _)
+      1 * serialPort.getResponse(_)
+  }
+
+  def "Procesa conmutar ambos correctamente"() {
     given:
       cli.getOptionValue("t") >> "both"
     when: "se indica canal de entrada y de salida"
-      cli.getOptionValue("o") >> "0"
       cli.getOptionValue("i") >> "0"
+      cli.getOptionValue("o") >> "0"
       app.parse(_ as String[])
     then:
-      1 * serialPort.sendCommand(_ as byte[], 0, _)
+      1 * serialPort.sendCommand([SwitchBoth.CONTROL, 0x30, 0x30, 0x30, 0x30, 0x0D] as byte[], 0, _)
+      1 * serialPort.getResponse(_)
+    when: "se indica canal de entrada, de salida y de audio"
+      cli.getOptionValue("a") >> "0"
+      cli.getOptionValue("i") >> "0"
+      cli.getOptionValue("o") >> "0"
+      app.parse(_ as String[])
+    then:
+      1 * serialPort.sendCommand([SwitchBoth.CONTROL, 0x30, 0x30, 0x30, 0x30, 0x30, 0x30, 0x0D] as byte[], 0, _)
       1 * serialPort.getResponse(_)
     when: "no se indica canal de entrada"
       cli.getOptionValue("o") >> "0"
@@ -58,6 +78,26 @@ class CliSpec extends Specification {
       thrown NumberFormatException
       0 * serialPort.sendCommand(*_)
       0 * serialPort.getResponse(_)
+  }
+
+  def "Procesa conmutar vídeo correctamente"() {
+    given:
+      cli.getOptionValue("t") >> "video"
+    when: "se indica canal de entrada y de salida"
+      cli.getOptionValue("i") >> "0"
+      cli.getOptionValue("o") >> "0"
+      app.parse(_ as String[])
+    then:
+      1 * serialPort.sendCommand([SwitchVideo.CONTROL, 0x30, 0x30, 0x30, 0x30, 0x0D] as byte[], 0, _)
+      1 * serialPort.getResponse(_)
+  }
+
+  def "Rechaza comandos inválidos"() {
+    when:
+      cli.getOptionValue("t") >> "inválido"
+      app.parse(_ as String[])
+    then:
+      thrown UnsupportedOperationException
   }
 
 }

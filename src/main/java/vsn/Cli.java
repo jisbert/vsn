@@ -6,8 +6,7 @@ import java.lang.UnsupportedOperationException;
 import java.util.Objects;
 import javax.comm.CommPortIdentifier;
 import org.apache.commons.cli.*;
-import vsn.com.Command;
-import vsn.com.SwitchBoth;
+import vsn.com.*;
 import vsn.comm.SerialPort;
 import vsn.comm.SerialPortMock;
 
@@ -82,27 +81,32 @@ public class Cli {
     if (cli.hasOption("h")) { usage(); return;}
     // Inicia la conexión serie
     serialPort.init(serialPortId);
-    // Ejecuta el comando
+    // Configura el comando
     String commandType = cli.getOptionValue("t");
     byte[] commandBytes = null;
+    String inputChStr;
     switch (commandType) {
       case "audio":
+        inputChStr = Objects.nonNull(cli.getOptionValue("i")) ?
+                       cli.getOptionValue("i") : cli.getOptionValue("a");
+        commandBytes = new SwitchAudio(inputChStr, cli.getOptionValue("o")).getBytes();
         break;
       case "both":
-        Integer audioCh = Objects.nonNull(cli.getOptionValue("a")) ?
-                            Integer.parseInt(cli.getOptionValue("a")) : null;
-        int outputCh = Integer.parseInt(cli.getOptionValue("o"));
-        String inputChStr = Objects.nonNull(cli.getOptionValue("i")) ?
-                              cli.getOptionValue("i") : cli.getOptionValue("v");
-        int inputCh = Integer.parseInt(inputChStr);
-        Command command = new SwitchBoth(audioCh, outputCh, inputCh);
-        commandBytes = command.getBytes();
+        inputChStr = Objects.nonNull(cli.getOptionValue("i")) ?
+                       cli.getOptionValue("i") : cli.getOptionValue("v");
+        commandBytes = new SwitchBoth(cli.getOptionValue("a"),
+                                      cli.getOptionValue("o"),
+                                      inputChStr).getBytes();
         break;
       case "video":
+        inputChStr = Objects.nonNull(cli.getOptionValue("i")) ?
+                       cli.getOptionValue("i") : cli.getOptionValue("v");
+        commandBytes = new SwitchVideo(inputChStr, cli.getOptionValue("o")).getBytes();
         break;
       default:
         throw new UnsupportedOperationException("Operación no soportada");
     }
+    // Ejecuta el comando y obtiene una respuesta
     serialPort.sendCommand(commandBytes, 0, commandBytes.length);
     byte[] response = new byte[1];
     serialPort.getResponse(response);

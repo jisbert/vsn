@@ -8,6 +8,10 @@ public class SwitchVideo extends AbstractSwitch {
 
   public SwitchVideo() { super(0, 0); }
 
+  public SwitchVideo(int input, int output) { super(input, output); }
+
+  public SwitchVideo(String input, String output) { super(input, output); }
+
   @Override public byte getControl() { return CONTROL; }
 
   @Override public void setInput(int input) { setInput(input, "vídeo"); };

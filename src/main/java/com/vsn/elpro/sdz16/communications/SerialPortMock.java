@@ -39,7 +39,7 @@ public class SerialPortMock implements SerialPort {
       String s = sj.toString();
       LOGGER.debug("Enviado commando a la matriz: byte[{}] = {}", buffer.length, s);
     }
-    return 0;
+    return length;
   }
 
   /** Pone un ACK en la primera posición del búffer y el resto de Bytes a 0.

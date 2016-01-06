@@ -161,7 +161,8 @@ public class Cli {
         commandBytes = new SwitchVideo(inputChStr, cli.getOptionValue("o")).getBytes();
         break;
       default:
-        throw new UnsupportedOperationException("Operación no soportada");
+        usage();
+        return;
     }
     // Ejecuta el comando y obtiene una respuesta
     serialPort.sendCommand(commandBytes, 0, commandBytes.length);

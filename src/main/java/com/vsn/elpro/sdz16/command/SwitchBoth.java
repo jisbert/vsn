@@ -2,6 +2,8 @@ package com.vsn.elpro.sdz16.command;
 
 import java.nio.ByteBuffer;
 import java.util.Objects;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /** Comando conmutar ambos.
   *
@@ -12,6 +14,8 @@ import java.util.Objects;
 public class SwitchBoth extends SwitchVideo {
 
   public static final byte CONTROL = 0x42;
+  private static final Logger LOGGER =
+    LoggerFactory.getLogger(SwitchBoth.class.getName());
 
   private ByteBuffer buffer = ByteBuffer.allocate(8);
   private Integer audio;
@@ -25,29 +29,9 @@ public class SwitchBoth extends SwitchVideo {
   }
 
   public SwitchBoth(String audio, String output, String video) {
-    if (Objects.nonNull(audio)) setAudio(Integer.parseInt(audio));
-    setOutput(Integer.parseInt(output));
-    setVideo(Integer.parseInt(video));
-  }
-
-  /** Obtiene el canal de audio.
-    * @return identificador numérico del canal de audio
-    */
-  public int getAudio() {
-    return audio;
-  }
-
-  /** Asigna el canal de audio.
-    *
-    * El canal de audio es opcional, si se anula el comando selecciona el canal con
-    * el mismo identificador que el canal de entrada por defecto, el canal de vídeo.
-    * @param audio identificador numérico del canal de audio
-    */
-  public void setAudio(Integer audio) {
-    if (Objects.isNull(audio)) return;
-    if (audio < 0 || 16 < audio)
-      throw new IllegalArgumentException("Canal de entrada de audio incorrecto: " + audio);
-    this.audio = audio;
+    setAudio(audio);
+    setInput(video);
+    setOutput(output);
   }
 
   @Override public byte[] getBytes() {
@@ -67,5 +51,38 @@ public class SwitchBoth extends SwitchVideo {
     buffer.clear();
     return result;
   }
+
+  /** Obtiene el canal de audio.
+    * @return identificador numérico del canal de audio
+    */
+  public Integer getAudio() {
+    return audio;
+  }
+
+  private final String audioInputChErrorLog =
+    "Canal de entrada de audio incorrecto: {}";
+
+  /** Asigna el canal de audio.
+    *
+    * El canal de audio es opcional, si se anula el comando selecciona el canal con
+    * el mismo identificador que el canal de entrada por defecto, el canal de vídeo.
+    * @param audio identificador numérico del canal de audio
+    */
+  public void setAudio(Integer audio) {
+    if (Objects.isNull(audio)) { this.audio = null; return; }
+    secureSetChannel(i -> this.audio = i, audio, audioInputChErrorLog);
+  }
+
+  /** Asigna el canal de audio a partir de una secuencia de caracteres.
+    * @param audio secuencia de caracteres correspondiente al identificador
+                   numérico del canal de audio
+    * @see #setAudio(Integer)
+    */
+  public void setAudio(String audio) {
+    if (Objects.isNull(audio) || audio.isEmpty()) { this.audio = null; return; }
+    secureSetChannel(i -> this.audio = i, audio, audioInputChErrorLog);
+  }
+
+  @Override protected Logger getLogger() { return LOGGER; }
 
 }

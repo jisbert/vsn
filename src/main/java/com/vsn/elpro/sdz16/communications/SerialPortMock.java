@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory;
   * para crear un registro de las interacciones que se producen. La
   * configuración de logback se proporciona en el archivo {@code logback.xml} y
   * determina el modo en que se crea el registro. Por defecto, el registro se
-  * muestra por pantalla y se vuelca al fichero {@code sdz16.log} en la
+  * muestra por pantalla y se vuelca al fichero {@code vsn-sdz16-cli.log} en la
   * ubicación en la que se ejecuta la aplicación. El fichero rota cuando supera
   * un tamaño de 5 MB, creándose un nuevo fichero al superar este tamaño.
   */

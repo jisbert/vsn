@@ -136,8 +136,6 @@ public class Cli {
     catch (MissingOptionException e) { usage(); return; }
     catch (ParseException e) { throw new RuntimeException(e); }
     if (cli.hasOption("h")) { usage(); return;}
-    // Inicia la conexión serie
-    serialPort.init(getSerialPortId());
     // Configura el comando
     String commandType = cli.getOptionValue("t");
     byte[] commandBytes = null;
@@ -165,6 +163,7 @@ public class Cli {
         return;
     }
     // Ejecuta el comando y obtiene una respuesta
+    serialPort.init(getSerialPortId());
     serialPort.sendCommand(commandBytes, 0, commandBytes.length);
     byte[] response = new byte[1];
     serialPort.getResponse(response);

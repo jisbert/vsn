@@ -70,16 +70,14 @@ class CliSpec extends Specification {
     then:
       cli.getOptionValue("i") >> null
       thrown IllegalArgumentException
-      0 * serialPort.sendCommand(*_)
-      0 * serialPort.getResponse(_)
+      0 * serialPort._
     when: "no se indica canal de salida"
       cli.getOptionValue("i") >> "0"
       app.parse(_ as String[])
     then:
       cli.getOptionValue("o") >> null
       thrown IllegalArgumentException
-      0 * serialPort.sendCommand(*_)
-      0 * serialPort.getResponse(_)
+      0 * serialPort._
   }
 
   def "Procesa conmutar vídeo correctamente"() {
@@ -94,12 +92,12 @@ class CliSpec extends Specification {
       1 * serialPort.getResponse(_)
   }
 
-  def "Rechaza comandos inválidos"() {
+  def "No actúa para comandos inválidos"() {
     when:
       cli.getOptionValue("t") >> "inválido"
       app.parse(_ as String[])
     then:
-      thrown UnsupportedOperationException
+      0 * serialPort._
   }
 
 }

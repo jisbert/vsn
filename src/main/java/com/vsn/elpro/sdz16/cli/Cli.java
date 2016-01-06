@@ -168,7 +168,7 @@ public class Cli {
     byte[] response = new byte[1];
     serialPort.getResponse(response);
     if (response[0] == SerialPort.NACK)
-      throw new RuntimeException("La operación ha fallado");
+      LOGGER.error("La operación ha fallado");
   }
 
   /** Instancia el interfaz y trata de inyectar un puerto serie.

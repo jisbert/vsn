@@ -17,6 +17,26 @@ class SwitchBothSpec extends Specification {
       5     | 7      | 5     || '423037303530350D'
   }
 
+  def "setAudio anula el canal"() {
+    given:
+      def command = new SwitchBoth()
+      command.setAudio(1);
+    when:
+      command.setAudio(null);
+    then:
+      command.getAudio() == null
+  }
+
+  def "setAudio anula el canal cuando se pasa como argumento una secuencia vacía"() {
+    given:
+      def command = new SwitchBoth()
+      command.setAudio(1);
+    when:
+      command.setAudio("");
+    then:
+      command.getAudio() == null
+  }
+
   def "setAudio valida el canal"() {
     given:
       def command = new SwitchBoth()
@@ -49,6 +69,10 @@ class SwitchBothSpec extends Specification {
       command.setOutput(17)
     then:
       thrown IllegalArgumentException
+    when:
+      command.setOutput("abc")
+    then:
+      thrown IllegalArgumentException
   }
 
   def "setVideo valida el canal"() {
@@ -66,6 +90,11 @@ class SwitchBothSpec extends Specification {
       command.setVideo(17)
     then:
       thrown IllegalArgumentException
+    when:
+      command.setVideo("abc")
+    then:
+      thrown IllegalArgumentException
+
   }
 
 }

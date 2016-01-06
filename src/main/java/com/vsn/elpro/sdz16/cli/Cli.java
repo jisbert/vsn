@@ -5,10 +5,7 @@ import com.vsn.elpro.sdz16.command.SwitchBoth;
 import com.vsn.elpro.sdz16.command.SwitchVideo;
 import com.vsn.elpro.sdz16.communications.SerialPort;
 import com.vsn.elpro.sdz16.communications.SerialPortMock;
-import java.lang.RuntimeException;
-import java.lang.Throwable;
-import java.lang.String;
-import java.lang.UnsupportedOperationException;
+import java.lang.*;
 import java.util.Enumeration;
 import java.util.Objects;
 import javax.comm.CommPortIdentifier;
@@ -117,7 +114,7 @@ public class Cli {
           }
         }
       } catch (Throwable t) {
-        LOGGER.error("No se ha podido obtener un identificador de puerto válido", t);
+        LOGGER.warn("No se ha podido obtener un identificador de puerto válido");
       }
     }
     return serialPortId;

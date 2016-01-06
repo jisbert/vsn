@@ -4,6 +4,13 @@ package com.vsn.elpro.sdz16.command;
   */
 public interface Switch extends Command {
 
+  /** Mínimo identificador de canal soportado.
+    */
+  static final int CHANNEL_MIN = 0;
+  /** Máximo identificador de canal soportado.
+    */
+  static final int CHANNEL_MAX = 16;
+
   /** Obtiene el canal de entrada.
     * @return identificador numérico del canal de entrada
     */

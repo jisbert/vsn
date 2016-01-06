@@ -114,7 +114,7 @@ public class Cli {
           }
         }
       } catch (Throwable t) {
-        LOGGER.warn("No se ha podido obtener un identificador de puerto válido");
+        LOGGER.warn("No se ha obtenido un identificador de puerto válido con javax.comm");
       }
     }
     return serialPortId;

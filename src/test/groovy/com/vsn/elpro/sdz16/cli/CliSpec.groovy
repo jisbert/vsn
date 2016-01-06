@@ -69,7 +69,7 @@ class CliSpec extends Specification {
       app.parse(_ as String[])
     then:
       cli.getOptionValue("i") >> null
-      thrown NumberFormatException
+      thrown IllegalArgumentException
       0 * serialPort.sendCommand(*_)
       0 * serialPort.getResponse(_)
     when: "no se indica canal de salida"
@@ -77,7 +77,7 @@ class CliSpec extends Specification {
       app.parse(_ as String[])
     then:
       cli.getOptionValue("o") >> null
-      thrown NumberFormatException
+      thrown IllegalArgumentException
       0 * serialPort.sendCommand(*_)
       0 * serialPort.getResponse(_)
   }

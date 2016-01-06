@@ -59,8 +59,8 @@ public class Cli {
                           .longOpt("type")
                           .hasArg()
                           .argName("comando")
-                          .desc("tipo de comando, los comandos soportados son both (conmutar ambos), audio (conmutar " +
-                                "audio), video (conmutar vídeo)")
+                          .desc("tipo de comando, los comandos soportados son audio (conmutar audio), both (conmutar" +
+                                " ambos), video (conmutar vídeo)")
                           .required()
                           .build();
     Option video =  Option.builder("v")

@@ -46,14 +46,14 @@ class CliSpec extends Specification {
 
   def "vsn-sdz16-cli -t invalid"() {
     when:
-      cli.hasOption("h") >> true
+      cli.getOptionValue("t") >> "invalid"
       app.parse(_ as String[])
     then:
       1 * helpFormat._
       0 * parameterMap._
   }
 
-  def "vsn-sdz16-cli -t audio -a 0 - o 0"() {
+  def "vsn-sdz16-cli -t audio -a 0 -o 0"() {
     when:
       cli.getOptionValue("t") >> "audio"
       cli.getOptionValue("a") >> "0"
@@ -64,7 +64,7 @@ class CliSpec extends Specification {
       1 * parameterMap.put(ParameterMap.COMMAND, _ as SwitchAudio)
   }
 
-  def "vsn-sdz16-cli -t both -i 0 - o 0"() {
+  def "vsn-sdz16-cli -t both -i 0 -o 0"() {
     when:
       cli.getOptionValue("t") >> "both"
       cli.getOptionValue("i") >> "0"
@@ -75,7 +75,7 @@ class CliSpec extends Specification {
       1 * parameterMap.put(ParameterMap.COMMAND, _ as SwitchBoth)
   }
 
-  def "vsn-sdz16-cli -t video -v 0 - o 0"() {
+  def "vsn-sdz16-cli -t video -v 0 -o 0"() {
     when:
       cli.getOptionValue("t") >> "video"
       cli.getOptionValue("v") >> "0"
@@ -86,19 +86,19 @@ class CliSpec extends Specification {
       1 * parameterMap.put(ParameterMap.COMMAND, _ as SwitchVideo)
   }
 
-  def "vsn-sdz16-cli -t audio -a 0 - o 0 -p a"() {
+  def "vsn-sdz16-cli -t audio -a 0 -o 0 -p a"() {
     when:
       cli.getOptionValue("t") >> "audio"
       cli.getOptionValue("a") >> "0"
       cli.getOptionValue("o") >> "0"
-      cli.getOptionValue("p") >> "0"
+      cli.getOptionValue("p") >> "a"
       app.parse(_ as String[])
     then:
       0 * helpFormat._
       1 * parameterMap.put(ParameterMap.PORT_NAME, _ as String)
   }
 
-  def "vsn-sdz16-cli -t both -i 0 - o 0"() {
+  def "vsn-sdz16-cli -t both -i 0 -o 0 -v 10"() {
     when:
       cli.getOptionValue("t") >> "both"
       cli.getOptionValue("i") >> "0"
@@ -110,7 +110,7 @@ class CliSpec extends Specification {
       1 * parameterMap.put(ParameterMap.COMMAND, { it.input == 0 })
   }
 
-  def "vsn-sdz16-cli -t video - o 0"() {
+  def "vsn-sdz16-cli -t video -o 0"() {
     when:
       cli.getOptionValue("t") >> "video"
       cli.getOptionValue("o") >> "0"

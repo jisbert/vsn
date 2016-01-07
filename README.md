@@ -33,8 +33,14 @@ Para compilar la aplicación se requiere además el [JDK de Oracle (jdk1.8.0_66)
 
 Para utilizar la aplicación basta con extraer el contenido de la distribución en un directorio y ejecutar la aplicación desde la línea de comandos.
 
-    $ 7z x vsn-sdz16-cli-2.1.zip && mv vsn-sdz16-cli-2.1 $DIST_ROOT
+    $ 7z x vsn-sdz16-cli-2.2.zip && mv vsn-sdz16-cli-2.2 $DIST_ROOT
     $ $DIST_ROOT/bin/vsn-sdz16-cli
+
+De forma equivalente.
+
+    $ java -cp '$DIST_ROOT/lib/comm.jar:$DIST_ROOT/lib/commons-cli-1.3.1.jar:'\
+    > '$DIST_ROOT/lib/logback-classic-1.1.3.jar:$DIST_ROOT/lib/logback-core-1.1.3.jar:'\
+    > '$DIST_ROOT/lib/slf4j-api-1.7.7.jar:$DIST_ROOT/lib/vsn-sdz16-cli-2.2.jar' com.vsn.elpro.sdz16.Main
 
 ## Generar la distribución
 
@@ -49,6 +55,8 @@ La primera vez que se ejecuta el comando el programa descarga la distribución d
 Una vez generada la distribución el informe de las pruebas unitarias puede consultarse en la siguiente ubicación:
 
     $ firefox $PROJECT_ROOT/build/reports/tests/index.html
+
+Las distribuciones (un archivo `tar` y un archivo `zip`) se generan en el directorio `$PROJECT_ROOT/build/distributions`.
 
 ## Utilizar la librería Java Communications API<a name="javax-comm"></a>
 

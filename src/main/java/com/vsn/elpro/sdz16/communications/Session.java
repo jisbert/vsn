@@ -21,6 +21,7 @@ public class Session {
   public static final int MAX_RESPONSE_SIZE = 74;
   private static final Logger LOGGER =
     LoggerFactory.getLogger(Session.class.getName());
+
   private final byte[] RESPONSE_BUFFER = new byte[MAX_RESPONSE_SIZE];
   private CommPortIdentifier serialPortId;
   private SerialPort serialPort;

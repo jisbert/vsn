@@ -3,7 +3,7 @@ apply plugin: 'groovy'
 
 applicationName = 'vsn-sdz16-cli'
 mainClassName = 'com.vsn.elpro.sdz16.Main'
-version = '2.1'
+version = '2.2'
 
 repositories {
   mavenCentral()
@@ -36,5 +36,4 @@ distributions.main.contents {
   from ('lib/commapi/docs/javax.comm.properties') { into 'lib' }
   from (javadoc) { into 'docs' }
   from (sourceSets.main.allSource) { into 'src' }
-  from (sourceSets.test.allSource) { into 'src' }
 }

@@ -2,7 +2,7 @@ apply plugin: 'application'
 apply plugin: 'groovy'
 
 applicationName = 'vsn-sdz16-cli'
-mainClassName = 'com.vsn.elpro.sdz16.cli.Cli'
+mainClassName = 'com.vsn.elpro.sdz16.Main'
 version = '1.5'
 
 repositories {

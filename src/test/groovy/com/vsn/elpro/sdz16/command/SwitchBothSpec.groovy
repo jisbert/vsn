@@ -41,6 +41,10 @@ class SwitchBothSpec extends Specification {
     given:
       def command = new SwitchBoth()
     when:
+      command.setAudio(null)
+    then: "nulo es un valor válido, el canal se determina a partir del de vídeo"
+      notThrown IllegalArgumentException
+    when:
       command.setAudio(-1)
     then:
       thrown IllegalArgumentException
@@ -49,9 +53,13 @@ class SwitchBothSpec extends Specification {
     then:
       thrown IllegalArgumentException
     when:
-      command.setAudio(null)
-    then: "nulo es un valor válido, el canal se determina a partir del de vídeo"
-      notThrown Exception
+      command.setAudio("abc")
+    then:
+      thrown IllegalArgumentException
+    when:
+      (Switch.CHANNEL_MIN..Switch.CHANNEL_MAX).each { command.setAudio it }
+    then:
+      notThrown IllegalArgumentException
   }
 
   def "setOutput valida el canal"() {
@@ -60,7 +68,7 @@ class SwitchBothSpec extends Specification {
     when:
       command.setOutput(null)
     then:
-      thrown Exception
+      thrown IllegalArgumentException
     when:
       command.setOutput(-1)
     then:
@@ -73,6 +81,10 @@ class SwitchBothSpec extends Specification {
       command.setOutput("abc")
     then:
       thrown IllegalArgumentException
+    when:
+      (Switch.CHANNEL_MIN..Switch.CHANNEL_MAX).each { command.setOutput it }
+    then:
+      notThrown IllegalArgumentException
   }
 
   def "setVideo valida el canal"() {
@@ -81,7 +93,7 @@ class SwitchBothSpec extends Specification {
     when:
       command.setVideo(null)
     then:
-      thrown Exception
+      thrown IllegalArgumentException
     when:
       command.setVideo(-1)
     then:
@@ -94,7 +106,10 @@ class SwitchBothSpec extends Specification {
       command.setVideo("abc")
     then:
       thrown IllegalArgumentException
-
+    when:
+      (Switch.CHANNEL_MIN..Switch.CHANNEL_MAX).each { command.setVideo it }
+    then:
+      notThrown IllegalArgumentException
   }
 
 }

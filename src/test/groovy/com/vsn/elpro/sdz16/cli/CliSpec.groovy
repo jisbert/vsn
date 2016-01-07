@@ -3,8 +3,6 @@ package com.vsn.elpro.sdz16.cli
 import com.vsn.elpro.sdz16.command.SwitchAudio
 import com.vsn.elpro.sdz16.command.SwitchBoth
 import com.vsn.elpro.sdz16.command.SwitchVideo
-import com.vsn.elpro.sdz16.communications.SerialPort
-import com.vsn.elpro.sdz16.communications.SerialPortMock
 import org.apache.commons.cli.*
 import spock.lang.*
 
@@ -13,93 +11,113 @@ class CliSpec extends Specification {
   CommandLine cli = Mock()
   CommandLineParser parser = Mock() { parse(*_) >> cli }
   HelpFormatter helpFormat = Mock()
-  SerialPort serialPort = Mock(SerialPortMock)
-  def app = new Cli(cli: cli,
-                    helpFormat: helpFormat,
+  ParameterMap parameterMap = Mock()
+  def app = new Cli(helpFormat: helpFormat,
                     parser: parser,
-                    serialPort: serialPort)
+                    parameterMap: parameterMap)
 
-  def "Procesa las opciones correctamente"() {
+  def "Sólo puede utilizarse una vez"() {
     when:
       cli.hasOption("h") >> true
       app.parse(_ as String[])
+      app.parse(_ as String[])
     then:
-      1 * helpFormat.printHelp(*_)
-      0 * serialPort._
+      thrown IllegalStateException
+      0 * parameterMap._
+  }
+
+  def "vsn-sdz16-cli"() {
     when:
       parser.parse(*_) >> { throw new MissingOptionException("") }
       app.parse(_ as String[])
     then:
-      1 * helpFormat.printHelp(*_)
-      0 * serialPort._
+      1 * helpFormat._
+      0 * parameterMap._
   }
 
-  def "Procesa conmutar audio correctamente"() {
-    given:
-      cli.getOptionValue("t") >> "audio"
-    when: "se indica canal de entrada y de salida"
-      cli.getOptionValue("i") >> "0"
-      cli.getOptionValue("o") >> "0"
-      app.parse(_ as String[])
-    then:
-      1 * serialPort.sendCommand([SwitchAudio.CONTROL, 0x30, 0x30, 0x30, 0x30, 0x0D] as byte[], 0, _)
-      1 * serialPort.getResponse(_)
-  }
-
-  def "Procesa conmutar ambos correctamente"() {
-    given:
-      cli.getOptionValue("t") >> "both"
-    when: "se indica canal de entrada y de salida"
-      cli.getOptionValue("i") >> "0"
-      cli.getOptionValue("o") >> "0"
-      app.parse(_ as String[])
-    then:
-      1 * serialPort.sendCommand([SwitchBoth.CONTROL, 0x30, 0x30, 0x30, 0x30, 0x0D] as byte[], 0, _)
-      1 * serialPort.getResponse(_)
-    when: "se indica canal de entrada, de salida y de audio"
-      cli.getOptionValue("a") >> "0"
-      cli.getOptionValue("i") >> "0"
-      cli.getOptionValue("o") >> "0"
-      app.parse(_ as String[])
-    then:
-      1 * serialPort.sendCommand([SwitchBoth.CONTROL, 0x30, 0x30, 0x30, 0x30, 0x30, 0x30, 0x0D] as byte[], 0, _)
-      1 * serialPort.getResponse(_)
-    when: "no se indica canal de entrada"
-      cli.getOptionValue("o") >> "0"
-      app.parse(_ as String[])
-    then:
-      cli.getOptionValue("i") >> null
-      thrown IllegalArgumentException
-      0 * serialPort.sendCommand(*_)
-      0 * serialPort.getResponse(_)
-    when: "no se indica canal de salida"
-      cli.getOptionValue("i") >> "0"
-      app.parse(_ as String[])
-    then:
-      cli.getOptionValue("o") >> null
-      thrown IllegalArgumentException
-      0 * serialPort.sendCommand(*_)
-      0 * serialPort.getResponse(_)
-  }
-
-  def "Procesa conmutar vídeo correctamente"() {
-    given:
-      cli.getOptionValue("t") >> "video"
-    when: "se indica canal de entrada y de salida"
-      cli.getOptionValue("i") >> "0"
-      cli.getOptionValue("o") >> "0"
-      app.parse(_ as String[])
-    then:
-      1 * serialPort.sendCommand([SwitchVideo.CONTROL, 0x30, 0x30, 0x30, 0x30, 0x0D] as byte[], 0, _)
-      1 * serialPort.getResponse(_)
-  }
-
-  def "Rechaza comandos inválidos"() {
+  def "vsn-sdz16-cli -h"() {
     when:
-      cli.getOptionValue("t") >> "inválido"
+      cli.hasOption("h") >> true
       app.parse(_ as String[])
     then:
-      thrown UnsupportedOperationException
+      1 * helpFormat._
+      0 * parameterMap._
+  }
+
+  def "vsn-sdz16-cli -t invalid"() {
+    when:
+      cli.hasOption("h") >> true
+      app.parse(_ as String[])
+    then:
+      1 * helpFormat._
+      0 * parameterMap._
+  }
+
+  def "vsn-sdz16-cli -t audio -a 0 - o 0"() {
+    when:
+      cli.getOptionValue("t") >> "audio"
+      cli.getOptionValue("a") >> "0"
+      cli.getOptionValue("o") >> "0"
+      app.parse(_ as String[])
+    then:
+      0 * helpFormat._
+      1 * parameterMap.put(ParameterMap.COMMAND, _ as SwitchAudio)
+  }
+
+  def "vsn-sdz16-cli -t both -i 0 - o 0"() {
+    when:
+      cli.getOptionValue("t") >> "both"
+      cli.getOptionValue("i") >> "0"
+      cli.getOptionValue("o") >> "0"
+      app.parse(_ as String[])
+    then:
+      0 * helpFormat._
+      1 * parameterMap.put(ParameterMap.COMMAND, _ as SwitchBoth)
+  }
+
+  def "vsn-sdz16-cli -t video -v 0 - o 0"() {
+    when:
+      cli.getOptionValue("t") >> "video"
+      cli.getOptionValue("v") >> "0"
+      cli.getOptionValue("o") >> "0"
+      app.parse(_ as String[])
+    then:
+      0 * helpFormat._
+      1 * parameterMap.put(ParameterMap.COMMAND, _ as SwitchVideo)
+  }
+
+  def "vsn-sdz16-cli -t audio -a 0 - o 0 -p a"() {
+    when:
+      cli.getOptionValue("t") >> "audio"
+      cli.getOptionValue("a") >> "0"
+      cli.getOptionValue("o") >> "0"
+      cli.getOptionValue("p") >> "0"
+      app.parse(_ as String[])
+    then:
+      0 * helpFormat._
+      1 * parameterMap.put(ParameterMap.PORT_NAME, _ as String)
+  }
+
+  def "vsn-sdz16-cli -t both -i 0 - o 0"() {
+    when:
+      cli.getOptionValue("t") >> "both"
+      cli.getOptionValue("i") >> "0"
+      cli.getOptionValue("v") >> "10"
+      cli.getOptionValue("o") >> "0"
+      app.parse(_ as String[])
+    then:
+      0 * helpFormat._
+      1 * parameterMap.put(ParameterMap.COMMAND, { it.input == 0 })
+  }
+
+  def "vsn-sdz16-cli -t video - o 0"() {
+    when:
+      cli.getOptionValue("t") >> "video"
+      cli.getOptionValue("o") >> "0"
+      app.parse(_ as String[])
+    then:
+      thrown IllegalArgumentException
+      0 * parameterMap._
   }
 
 }

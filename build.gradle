@@ -3,7 +3,7 @@ apply plugin: 'groovy'
 
 applicationName = 'vsn-sdz16-cli'
 mainClassName = 'com.vsn.elpro.sdz16.Main'
-version = '2.0'
+version = '2.1'
 
 repositories {
   mavenCentral()

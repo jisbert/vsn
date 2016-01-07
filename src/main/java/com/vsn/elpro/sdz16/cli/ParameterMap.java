@@ -1,9 +1,10 @@
 package com.vsn.elpro.sdz16.cli;
 
-import java.lang.*;
-import java.util.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.lang.Class;
+import java.lang.Integer;
+import java.lang.Object;
+import java.util.Map;
+import java.util.HashMap;
 
 /** Mapa de parámetros procesados.
   */
@@ -15,8 +16,6 @@ public class ParameterMap {
   /** Identificador del parámetro {@code PORT_NAME}.
     */
   public static final int PORT_NAME = 1;
-  private static final Logger LOGGER =
-    LoggerFactory.getLogger(ParameterMap.class.getName());
   private static final Map<Integer, Object> parameterMap = new HashMap<>();
 
   /** Introduce un parámetro en el mapa.

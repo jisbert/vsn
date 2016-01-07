@@ -52,9 +52,7 @@ Una vez generada la distribución el informe de las pruebas unitarias puede cons
 
 ## Utilizar la librería Java Communications API<a name="javax-comm"></a>
 
-Para utilizar esta aplicación no es necesario utilizar Java Communications API, puesto que no se establece una conexión real con la matriz de conmutación sino que se emplea una implementación que suplanta a la conexión real. Por otro lado, esta librería es anticuada y no existe soporte oficial para sistemas Linux de 64 bit, Windows o MacOS. No obstante, la aplicación trata de obtener un descriptor de puerto serie válido utilizando la clase `javax.comm.CommPortIdentifier` y se ha preparado el API de modo que resulte posible inyectar un descriptor de puerto serie y una implementación efectiva de `SerialPort` para poder establecer una comunicación real con la matriz (véase la documentación del API para más información).
-
-A continuación se describe como configurar el entorno para utilizar la librería Java Communications API en un sistema Linux de 32 bits, esta información se ha obtenido de la documentación de la propia librería. Es preciso configurar la variable `LD_LIBRARY_PATH` de modo que apunte al directorio que contiene las librerías nativas, suponiendo que se ha instalado Java Communications API en el directorio `$PROJECT_ROOT/lib`:
+A continuación se describe como configurar el entorno para utilizar la librería Java Communications API en un sistema Linux de 32 bits (no existe soporte oficial para sistemas Linux de 64 bit, Windows o MacOS), esta información se ha obtenido de la documentación de la propia librería. Únicamente es necesario configurar la variable `LD_LIBRARY_PATH` de modo que apunte al directorio que contiene las librerías nativas, suponiendo que se ha instalado Java Communications API en el directorio `$PROJECT_ROOT/lib`:
 
     $ export LD_LIBRARY_PATH=$PROJECT_ROOT/lib/commapi/lib/${LD_LIBRARY_PATH+:}$LD_LIBRARY_PATH
 

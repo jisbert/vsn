@@ -1,7 +1,6 @@
 package com.vsn.elpro.sdz16.communications;
 
 import java.lang.String;
-import java.util.Arrays;
 import java.util.Objects;
 import java.util.StringJoiner;
 import javax.comm.CommPortIdentifier;

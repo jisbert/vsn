@@ -20,11 +20,10 @@ public interface SerialPort {
     */
   int init(CommPortIdentifier port);
 
-  /** Envía un comando a la matríz.
-    * @param buffer secuencia de Bytes que representa el comando atiende a la
-    *               sección 6.0 del manual de usuario
-    * @param offset posición del primer Byte relevante
-    * @param length longitud de la secuencia de Bytes
+  /** Envía un comando a la matriz.
+    * @param buffer búfer que contiene el comando
+    * @param offset posición del primer Byte relevante en el búfer
+    * @param length longitud del comando
     * @return número de Bytes enviados
     */
   int sendCommand(byte[] buffer, int offset, int length);

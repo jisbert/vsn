@@ -42,14 +42,10 @@ public class SerialPortMock implements SerialPort {
     return length;
   }
 
-  /** Pone un ACK en la primera posición del búffer y el resto de Bytes a 0.
-    * @param buffer búffer en el que se almacena la respuesta
-    * @return número de Bytes escritos en el búffer, longitud del búffer
-    */
   public int getResponse(byte[] buffer) {
-    Arrays.fill(buffer, (byte) 0);
     buffer[0] = ACK;
-    LOGGER.debug("Obtenida respuesta de la matriz: byte[{}] = {}", buffer.length, buffer);
+    LOGGER.debug("Obtenida respuesta de la matriz: byte[{}] = {}",
+                 1, String.format("%02X", buffer[0]));
     return 1;
   }
 

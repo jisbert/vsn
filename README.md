@@ -36,6 +36,12 @@ Para utilizar la aplicación basta con extraer el contenido de la distribución 
     $ 7z x vsn-sdz16-cli-2.1.zip && mv vsn-sdz16-cli-2.1 $DIST_ROOT
     $ $DIST_ROOT/bin/vsn-sdz16-cli
 
+De forma equivalente.
+
+    $ java -cp '$DIST_ROOT/lib/comm.jar:$DIST_ROOT/lib/commons-cli-1.3.1.jar:'\
+    > '$DIST_ROOT/lib/logback-classic-1.1.3.jar:$DIST_ROOT/lib/logback-core-1.1.3.jar:'\
+    > '$DIST_ROOT/lib/slf4j-api-1.7.7.jar:$DIST_ROOT/lib/vsn-sdz16-cli-2.1.jar' com.vsn.elpro.sdz16.Main
+
 ## Generar la distribución
 
 El programa `gradlew` compila el código fuente, ejecuta las pruebas unitarias y genera la distribución, debe ejecutarse en el directorio de instalación del proyecto. Recordar de nuevo que para que funcione es necesario instalar Java Communications API en el directorio `lib` del proyecto.
@@ -49,6 +55,8 @@ La primera vez que se ejecuta el comando el programa descarga la distribución d
 Una vez generada la distribución el informe de las pruebas unitarias puede consultarse en la siguiente ubicación:
 
     $ firefox $PROJECT_ROOT/build/reports/tests/index.html
+
+Las distribuciones (un archivo `tar` y un archivo `zip`) se generan en el directorio `$PROJECT_ROOT/build/distributions`.
 
 ## Utilizar la librería Java Communications API<a name="javax-comm"></a>
 

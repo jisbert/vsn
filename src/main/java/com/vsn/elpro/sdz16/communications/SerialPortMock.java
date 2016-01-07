@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory;
   * para crear un registro de las interacciones que se producen. La
   * configuración de logback se proporciona en el archivo {@code logback.xml} y
   * determina el modo en que se crea el registro. Por defecto, el registro se
-  * muestra por pantalla y se vuelca al fichero {@code sdz16.log} en la
+  * muestra por pantalla y se vuelca al fichero {@code vsn-sdz16-cli.log} en la
   * ubicación en la que se ejecuta la aplicación. El fichero rota cuando supera
   * un tamaño de 5 MB, creándose un nuevo fichero al superar este tamaño.
   */
@@ -39,17 +39,13 @@ public class SerialPortMock implements SerialPort {
       String s = sj.toString();
       LOGGER.debug("Enviado commando a la matriz: byte[{}] = {}", buffer.length, s);
     }
-    return 0;
+    return length;
   }
 
-  /** Pone un ACK en la primera posición del búffer y el resto de Bytes a 0.
-    * @param buffer búffer en el que se almacena la respuesta
-    * @return número de Bytes escritos en el búffer, longitud del búffer
-    */
   public int getResponse(byte[] buffer) {
-    Arrays.fill(buffer, (byte) 0);
     buffer[0] = ACK;
-    LOGGER.debug("Obtenida respuesta de la matriz: byte[{}] = {}", buffer.length, buffer);
+    LOGGER.debug("Obtenida respuesta de la matriz: byte[{}] = {}",
+                 1, String.format("%02X", buffer[0]));
     return 1;
   }
 

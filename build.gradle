@@ -36,5 +36,4 @@ distributions.main.contents {
   from ('lib/commapi/docs/javax.comm.properties') { into 'lib' }
   from (javadoc) { into 'docs' }
   from (sourceSets.main.allSource) { into 'src' }
-  from (sourceSets.test.allSource) { into 'src' }
 }
